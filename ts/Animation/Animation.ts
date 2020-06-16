@@ -1,7 +1,6 @@
 import { KeyBoard } from "../KeyBoard/KeyBoard";
 
 export interface Animable{
-
     update():void;
     draw():void;
 }
@@ -58,20 +57,20 @@ export class Animation{
         requestAnimationFrame(() => this.nextFrame());
     }
 
-    specialKeys():void{
-        let thisAnimation = this;
-        this._keyboard.clickedKey(this._keyboard.R_KEY,function(){
-            thisAnimation.clearScreen();
+   private specialKeys():void{
+        this._keyboard.clickedKey(KeyBoard.R_KEY,()=>{
+            this.clearScreen();
         });
-           
-        if(this._keyboard.pressKey(this._keyboard.P_KEY)){
+        
+        this._keyboard.clickedKey(KeyBoard.P_KEY,()=>{
             if(this._clearCanvas)
                 this.cleanOff();
-        }
-        if(this._keyboard.pressKey(this._keyboard.O_KEY)){
+        });
+        
+        this._keyboard.clickedKey(KeyBoard.O_KEY,()=>{
             if(!this._clearCanvas)
                 this.cleanOn();
-        }
+        });
     }
 
     public clearScreen():void{
