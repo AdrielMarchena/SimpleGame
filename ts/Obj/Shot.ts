@@ -1,9 +1,7 @@
 import { Ball } from "./Formats/Ball";
 import { Animation } from '../Animation/Animation';
-import { KeyBoard } from "../KeyBoard/KeyBoard";
 
 export class Shot extends Ball{
-
     private _inBounds:boolean;
 
     constructor(ctx:CanvasRenderingContext2D,animation:Animation){
@@ -19,11 +17,11 @@ export class Shot extends Ball{
         }
             
         this.accelerate();
-        
-        
         this.isInBounds();
     }
-
+    /**
+     * Check to see if the shoot still in Bounds (inside of Canvas)
+     */
     private isInBounds():void{
         if(this._x-this._radius > this._ctx.canvas.width || 
            this._x+this._radius < 0 || 
@@ -31,8 +29,6 @@ export class Shot extends Ball{
            this._y+this._radius < 0){
                 this._inBounds = false;
         }
-        else
-           this._inBounds = true;
     }
 
     private accelerate():void{

@@ -1,7 +1,7 @@
 import { Animable,Animation } from "../../Animation/Animation";
 import { KeyBoard } from '../../KeyBoard/KeyBoard';
 
-export abstract class Renderizable implements Animable{
+export abstract class Entity implements Animable{
 
     protected _x:number;
     protected _y:number;

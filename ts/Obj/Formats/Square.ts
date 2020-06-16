@@ -1,17 +1,6 @@
-import { Renderizable } from "./Renderizable";
-import { KeyBoard } from "../../KeyBoard/KeyBoard";
-import { Ball } from "./Ball";
-import { Animation } from "../../Animation/Animation";
+import { Entity } from "./Entity";
 
-let colorArray = [         /*Some color for the balls */
-    '#0A1747',
-    '#0029FA',
-    '#8D07F6',
-    '#FFFF05',
-    '#D4DBF5',
-];
-
-export class Square extends Renderizable{
+export class Square extends Entity{
 
     protected _width:number;
     protected _height:number;
@@ -42,7 +31,6 @@ export class Square extends Renderizable{
     public draw():void{
         console.log('Override this method to implement draw');
     }
-
 
 public get width():number{
     return this._width;

@@ -1,9 +1,9 @@
-import { Renderizable } from './Renderizable';
+import { Entity } from './Entity';
 /**
  * Class to represent a Ball
  * 
  */
-export class Ball extends Renderizable{
+export class Ball extends Entity{
 
     protected _radius:number;
     /**
