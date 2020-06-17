@@ -10,13 +10,14 @@ export class Player extends Square{
     public static readonly O_UP = 3;
     public static readonly O_DOWN = 4;
     public orientation:number;
+    public score:number;
     //public soundShot:HTMLAudioElement;
 
     constructor(ctx:CanvasRenderingContext2D,keybord:KeyBoard,animation:Animation){
         super(ctx);
         this._keyboard = keybord;
         this._animation = animation;
-
+        this.score = 0;
         this.orientation = Player.O_RIGHT;
     }
 
@@ -26,7 +27,7 @@ export class Player extends Square{
 
     public draw():void{
         this._ctx.save();
-        
+        this._ctx.globalCompositeOperation = 'destination-over';
         this._ctx.beginPath();
         this._ctx.rect(this._x,this._y,this._width,this._height);
         //this._ctx.strokeStyle = this._color;
@@ -38,11 +39,11 @@ export class Player extends Square{
     }
 
     private shoot():void{
-        let shot = new Shot(this._ctx,this._animation);
+        const shot = new Shot(this._ctx,this._animation);
         shot.x = this._x + this._width/2;
         shot.y = this._y + this.height/2;
         shot.radius = 2;
-        shot.color = 'red';
+        shot.color = 'red';//Animation.colorArray[1];
 
         if(this.orientation == Player.O_LEFT) shot.dx = -20;
         else if(this.orientation == Player.O_RIGHT) shot.dx = 20;
@@ -51,6 +52,8 @@ export class Player extends Square{
         else throw new Error("The orientation to player obj do not exist");
 
         this._animation.addSprite(shot);
+        this.score++;
+        window.localStorage.setItem('playerScore',this.score.toString());
     }
 
     private checkInputs():void{

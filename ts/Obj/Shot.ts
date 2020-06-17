@@ -40,7 +40,7 @@ export class Shot extends Ball{
     public draw():void{
         if(this._inBounds){
             this._ctx.save();
-        
+            this._ctx.globalCompositeOperation = 'destination-over';
             this._ctx.beginPath();
             this._ctx.arc(this._x,this._y,this._radius,0,Math.PI*2,false);
             //this._ctx.strokeStyle = this._color;

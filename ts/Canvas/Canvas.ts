@@ -1,21 +1,21 @@
 export class Canvas{
 
-        private  _canvas: HTMLCanvasElement;
-        private  _ctx: CanvasRenderingContext2D;
+        private static _canvas: HTMLCanvasElement;
+        private static _ctx: CanvasRenderingContext2D;
         public defaultWidth:number;
         public defaultHeight:number;
 
         constructor(){
             //Search for canvas element on html file
-            this._canvas = document.querySelector('canvas');
+            Canvas._canvas = document.querySelector('canvas');
             //Test to see if html actually have a canvas element
             //If not, creates one and put after de body begin
-            if(this._canvas == null || this._canvas == undefined){
-                this._canvas = document.createElement('canvas');
-                document.body.insertAdjacentElement('afterbegin',this._canvas);
+            if(Canvas._canvas == null || Canvas._canvas == undefined){
+                Canvas._canvas = document.createElement('canvas');
+                document.body.insertAdjacentElement('afterbegin',Canvas._canvas);
             }
             //Get the context 2d of the canvas
-            this._ctx = this._canvas.getContext('2d');
+            Canvas._ctx = Canvas._canvas.getContext('2d');
             this.defaultWidth = 600;
             this.defaultHeight = 600;
         }
@@ -26,15 +26,15 @@ export class Canvas{
          * @param height The height of canvas; Default = 600 (can be changed)
          */
         public resizeCanvas(width:number = this.defaultWidth,height:number = this.defaultHeight):void{
-            this._canvas.width = width;
-            this._canvas.height = height;
+            Canvas._canvas.width = width;
+            Canvas._canvas.height = height;
         }
 
         public get canvas():HTMLCanvasElement{
-            return this._canvas;
+            return Canvas._canvas;
         }
         public get ctx():CanvasRenderingContext2D{
-            return this._ctx;
+            return Canvas._ctx;
         }
 }
 
