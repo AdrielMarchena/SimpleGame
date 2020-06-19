@@ -17,7 +17,12 @@ export class Player extends Square{
         super(ctx);
         this._keyboard = keybord;
         this._animation = animation;
-        this.score = 0;
+        
+        const pl = window.localStorage.getItem('playerScore');
+        if(!pl)
+            this.score = 0;
+        else
+            this.score = parseInt(pl);
         this.orientation = Player.O_RIGHT;
     }
 
@@ -29,9 +34,9 @@ export class Player extends Square{
         this._ctx.save();
         this._ctx.globalCompositeOperation = 'destination-over';
         this._ctx.beginPath();
-        this._ctx.rect(this._x,this._y,this._width,this._height);
+        this._ctx.rect(this.x,this.y,this.width,this.height);
         //this._ctx.strokeStyle = this._color;
-        this._ctx.fillStyle = this._color;
+        this._ctx.fillStyle = this.color;
         //this._ctx.stroke();
         this._ctx.fill();
 
@@ -40,8 +45,8 @@ export class Player extends Square{
 
     private shoot():void{
         const shot = new Shot(this._ctx,this._animation);
-        shot.x = this._x + this._width/2;
-        shot.y = this._y + this.height/2;
+        shot.x = this.x + this.width/2;
+        shot.y = this.y + this.height/2;
         shot.radius = 2;
         shot.color = 'red';//Animation.colorArray[1];
 
@@ -58,24 +63,24 @@ export class Player extends Square{
 
     private checkInputs():void{
         // X movement  
-        if(this._keyboard.pressKey(KeyBoard.ARROW_LEFT) && this._x > 0){
-            this._x -= this._dx;
+        if(this._keyboard.pressKey(KeyBoard.ARROW_LEFT) && this.x > 0){
+            this.x -= this.dx;
             this.orientation = Player.O_LEFT;
         }
         if(this._keyboard.pressKey(KeyBoard.ARROW_RIGHT)){
-            if(this._x+this._width < this._ctx.canvas.width){
-                this.x += this._dx;
+            if(this.x+this.width < this._ctx.canvas.width){
+                this.x += this.dx;
                 this.orientation = Player.O_RIGHT;
             }
         }
         // Y movement
-        if(this._keyboard.pressKey(KeyBoard.ARROW_UP) && this._y > 0){
-                this._y -= this._dy;   
+        if(this._keyboard.pressKey(KeyBoard.ARROW_UP) && this.y > 0){
+                this.y -= this.dy;   
                 this.orientation = Player.O_UP;
         }
         if(this._keyboard.pressKey(KeyBoard.ARROW_DOWN)){
-            if(this._y+this._height < this._ctx.canvas.height){
-                this._y += this._dy;
+            if(this.y+this.height < this._ctx.canvas.height){
+                this.y += this.dy;
                 this.orientation = Player.O_DOWN;
             }
         }

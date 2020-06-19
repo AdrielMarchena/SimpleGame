@@ -1,4 +1,5 @@
 import { KeyBoard } from "../KeyBoard/KeyBoard";
+import { Entity } from "../Obj/Formats/Entity";
 
 export interface Animable{
     update():void;
@@ -7,25 +8,19 @@ export interface Animable{
 
 export class Animation{
 
-    public static readonly colorArray = [
-        '#3803FA',
-        '#2A00D7',
-        '#7345FF',
-        '#11054E',
-        '#6B3DFF'
-    ];
+    public _clearCanvas:boolean;
+    public _sprites: any[];
+    public _on:boolean;
+    public _specialKeysOn:boolean;
 
-    private _clearCanvas:boolean;
-    private _sprites: any[];
-    private _on:boolean;
     private _ctx:CanvasRenderingContext2D;
     private _keyboard:KeyBoard;
-    private _specialKeysOn:boolean;
+
 
     constructor(sprite:any[],ctx:CanvasRenderingContext2D,keyboard:KeyBoard){
         this._sprites = sprite;
         this._ctx = ctx;
-        this._ctx.canvas.style.cssText = "background-color: " + Animation.colorArray[4] + ";";
+        this._ctx.canvas.style.cssText = "background-color: " + Entity.colorArray[4] + ";";
         this._clearCanvas = true;
         this._keyboard = keyboard;
         this._specialKeysOn = true;

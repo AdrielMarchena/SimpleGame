@@ -2,7 +2,8 @@
   "version": "1.0.0",
   "description": "My webpack project",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "openServer": "npx http-server > logfile.txt"
   },
   "devDependencies": {
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
