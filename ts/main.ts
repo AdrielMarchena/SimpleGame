@@ -1,11 +1,13 @@
 import { Canvas } from './Canvas/Canvas';
-import { Animation } from './Animation/Animation';
+import { Animation, Animable } from './Animation/Animation';
 import { Player } from './Obj/Player';
 import { KeyBoard } from './KeyBoard/KeyBoard';
 import { TextEntity } from './Obj/Text/TextEntity';
 import { Entity } from './Obj/Formats/Entity';
 import { ScoreText } from './Obj/Text/ScoreText';
+import { Colisions } from "./Colision/Colision";
 
+console.log("Some Special Keys:\n'P': disable the clean of canvas\n'O' enable the clean of canvas\n'R' clean the canvas once");
 //Create a obj for canvas
 const canvas:Canvas = new Canvas();
 const keyboard:KeyBoard = new KeyBoard(document);
@@ -14,45 +16,51 @@ let objArray:any = [];
 window.localStorage.setItem('playerScore','0');
 //Create the Animation Obj
 const animation = new Animation(objArray,canvas.ctx,keyboard);
+//create a new PLayer
+let player = createPlayer();
+animation.addSprite(player);
+//PAss some colision
+let colision = new Colisions.Colision(Colisions.TypesOfColision.FIRST_TO_ALL);
+colision.setMethodToColide(()=>{console.log("It Work")});
+colision.addObjToColision(player);
+
 //You can pass the weight and height that you want to resizeCanvas
 //Pass nothing and the Default value is 600x600
 canvas.resizeCanvas();
+//Add sprites to render
 animation.addSprite(createTextEntity());
 animation.addSprite(createScoreText());
-animation.addSprite(createPlayer());
+//Says that the loop can go on
 animation.turnOn();
-console.log("Some Special Keys:\n'P': disable the clean of canvas\n'O' enable the clean of canvas\n'R' clean the canvas once");
+//init the loop
 animation.nextFrame();
 
-//Discoment this to resize the canvas for full 
-//every time the window of browser resize
-/*
-window.addEventListener('resize',function(){
-    canvas.resizeCanvas(window.innerWidth,window.innerHeight);
-});*/
+animation.pushColision(colision);
 
+//Function to create an ScoreText, the number after the 'SCORE: ' Text 
 function createScoreText():ScoreText{
     const text:ScoreText = new ScoreText(canvas.ctx);
     text.x = 130;
     text.y = 30;
-    text.color = Entity.colorArray[3];
+    text.color = 'white';
     text.sSize = '30px';
     text.sFont ='Comic Sans MS';
     text.text = "0";
     return text;
 }
 
+//Function to create an Text Entity, That's the 'SCORE: ' on screen
 function createTextEntity():TextEntity{
     const text:TextEntity = new TextEntity(canvas.ctx);
     text.x = 20;
     text.y = 30;
-    text.color = Entity.colorArray[3];
+    text.color = 'white';
     text.sSize = '30px';
     text.sFont ='Comic Sans MS';
     text.text = "SCORE: ";
     return text;
 }
-
+//Function to create the Player obj
 function createPlayer():Player{
         const newSquare:Player = new Player(canvas.ctx,keyboard,animation);
         newSquare.color = Entity.colorArray[3];

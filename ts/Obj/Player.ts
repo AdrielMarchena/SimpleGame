@@ -2,8 +2,9 @@ import { Square } from "./Formats/Square";
 import { Animation } from '../Animation/Animation';
 import { Shot } from "./Shot";
 import { KeyBoard } from "../KeyBoard/KeyBoard";
+import { Colisions } from "../Colision/Colision";
 
-export class Player extends Square{
+export class Player extends Square implements Colisions.colisibleObj{
 
     public static readonly O_LEFT = 1;
     public static readonly O_RIGHT = 2;
@@ -42,6 +43,8 @@ export class Player extends Square{
 
         this._ctx.restore();
     }
+
+    public callBackMessageFunc(){    }
 
     private shoot():void{
         const shot = new Shot(this._ctx,this._animation);

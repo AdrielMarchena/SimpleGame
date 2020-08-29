@@ -1,6 +1,6 @@
 import { KeyBoard } from "../KeyBoard/KeyBoard";
 import { Entity } from "../Obj/Formats/Entity";
-
+import { Colisions } from "../Colision/Colision"
 export interface Animable{
     update():void;
     draw():void;
@@ -8,22 +8,23 @@ export interface Animable{
 
 export class Animation{
 
-    public _clearCanvas:boolean;
-    public _sprites: any[];
-    public _on:boolean;
-    public _specialKeysOn:boolean;
-
+    private _clearCanvas:boolean;
+    private _sprites:Animable[];
+    private _on:boolean;
+    private _specialKeysOn:boolean;
     private _ctx:CanvasRenderingContext2D;
     private _keyboard:KeyBoard;
+    private _colisionArray:Colisions.Colision[];
 
-
-    constructor(sprite:any[],ctx:CanvasRenderingContext2D,keyboard:KeyBoard){
+    constructor(sprite:Animable[],ctx:CanvasRenderingContext2D,keyboard:KeyBoard){
         this._sprites = sprite;
         this._ctx = ctx;
         this._ctx.canvas.style.cssText = "background-color: " + Entity.colorArray[4] + ";";
         this._clearCanvas = true;
         this._keyboard = keyboard;
-        this._specialKeysOn = true;
+        this.TurnSpecialKeysOn();
+        this.turnOff();
+        this._colisionArray = [];
     }
     
     public addSprite(sprite:Animable):void{
@@ -47,15 +48,16 @@ export class Animation{
         for (let i in this._sprites){
             this._sprites[i].update();
         }
+        for(let i=0 ; i < this._colisionArray.length;i++)
+            this._colisionArray[i].process();
 
         //Draw sprites
-        for (let i in this._sprites){
+        for (let i in this._sprites)
             this._sprites[i].draw();
-        }
         
         if(this._specialKeysOn)
             this.specialKeys();
-
+        
         //Call  next frame
         requestAnimationFrame(() => this.nextFrame());
     }
@@ -83,6 +85,10 @@ export class Animation{
             );
     }
 
+    public pushColision(colid:Colisions.Colision){
+        this._colisionArray.push(colid);
+    }
+
     public cleanOn():void{
         this._clearCanvas = true;
     }
@@ -102,10 +108,10 @@ export class Animation{
         return this._sprites;
     }
 
-    public get specialKeysOn():boolean{
-        return this._specialKeysOn;
+    public TurnSpecialKeysOn():boolean{
+        return this._specialKeysOn = true;
     }
-    public set specialKeysOn(on:boolean){
-        this._specialKeysOn = on;
+    public TurnSpecialKeysOff(){
+        this._specialKeysOn = false;
     }
 }
