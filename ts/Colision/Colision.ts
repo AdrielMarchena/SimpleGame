@@ -1,13 +1,20 @@
-
+//Thinking in remove this namespace, dont have any meaning
 export namespace Colisions{
-    
     export enum TypesOfColision{
         ALL_TO_ALL,
         FIRST_TO_ALL
     }
     
+    export class UtilInfo{
+        public x:number;
+        public y:number;
+        public w:number;
+        public h:number;
+    }
+
     export interface colisibleObj{
-        callBackMessageFunc():void;
+        callBackMessageFunc(obj:colisibleObj,cause:colisibleObj):void;
+        getUtilInfo():UtilInfo;
     }
 
     export class Colision{
@@ -48,13 +55,12 @@ export namespace Colisions{
         }
 
         private processAllMode():void{
-            //TODO: awesome code here
             for (let i = 0;i<this._objToColide.length;i++){
                 for(let j=0;i<this._objToColide.length;i++){
-                    if(i==j)    return;
+                    if(i==j)    continue;
                    if(this._methodToColide(this._objToColide[i],this._objToColide[j])){
-                       this._objToColide[i].callBackMessageFunc();
-                       this._objToColide[j].callBackMessageFunc();
+                       this._objToColide[i].callBackMessageFunc(this._objToColide[i],this._objToColide[j]);
+                       this._objToColide[j].callBackMessageFunc(this._objToColide[i],this._objToColide[j]);
                    }
                 }
             }
@@ -63,9 +69,10 @@ export namespace Colisions{
         private processFirtMode():void{
             //TODO: awesome code here
             for(let i=0;i<this._objToColide.length;i++){
+                if(i==0) continue;
                 if(this._methodToColide(this._objToColide[this.FIRST_ON_ARRAY],this._objToColide[i])){
-                    this._objToColide[this.FIRST_ON_ARRAY].callBackMessageFunc();
-                    this._objToColide[i].callBackMessageFunc();
+                    this._objToColide[this.FIRST_ON_ARRAY].callBackMessageFunc(this._objToColide[this.FIRST_ON_ARRAY],this._objToColide[i]);
+                    this._objToColide[i].callBackMessageFunc(this._objToColide[this.FIRST_ON_ARRAY],this._objToColide[i]);
                 }
             }
         }

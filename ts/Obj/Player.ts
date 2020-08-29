@@ -44,7 +44,18 @@ export class Player extends Square implements Colisions.colisibleObj{
         this._ctx.restore();
     }
 
-    public callBackMessageFunc(){    }
+    getUtilInfo():Colisions.UtilInfo{
+        const tempUtilInfo = new Colisions.UtilInfo();
+        tempUtilInfo.x = this.x;
+        tempUtilInfo.y = this.y;
+        tempUtilInfo.h = this.height;
+        tempUtilInfo.w = this.width;
+        return tempUtilInfo;
+    }
+
+    public callBackMessageFunc(obj:Colisions.colisibleObj,cause:Colisions.colisibleObj){
+        console.log("Hi, i am the player and i colided here");
+    }
 
     private shoot():void{
         const shot = new Shot(this._ctx,this._animation);

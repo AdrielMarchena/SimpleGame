@@ -1,41 +1,67 @@
 import { Canvas } from './Canvas/Canvas';
-import { Animation, Animable } from './Animation/Animation';
+import { Animation } from './Animation/Animation';
 import { Player } from './Obj/Player';
+import { Ground } from './Obj/Ground';
 import { KeyBoard } from './KeyBoard/KeyBoard';
 import { TextEntity } from './Obj/Text/TextEntity';
 import { Entity } from './Obj/Formats/Entity';
 import { ScoreText } from './Obj/Text/ScoreText';
 import { Colisions } from "./Colision/Colision";
 
-console.log("Some Special Keys:\n'P': disable the clean of canvas\n'O' enable the clean of canvas\n'R' clean the canvas once");
+console.log("Special Keys:\n'P': disable the clean of canvas\n'O' enable the clean of canvas\n'R' clean the canvas once");
 //Create a obj for canvas
 const canvas:Canvas = new Canvas();
-const keyboard:KeyBoard = new KeyBoard(document);
-//Obj array to pass for the Animator
-let objArray:any = [];
-window.localStorage.setItem('playerScore','0');
-//Create the Animation Obj
-const animation = new Animation(objArray,canvas.ctx,keyboard);
-//create a new PLayer
-let player = createPlayer();
-animation.addSprite(player);
-//PAss some colision
-let colision = new Colisions.Colision(Colisions.TypesOfColision.FIRST_TO_ALL);
-colision.setMethodToColide(()=>{console.log("It Work")});
-colision.addObjToColision(player);
 
-//You can pass the weight and height that you want to resizeCanvas
 //Pass nothing and the Default value is 600x600
 canvas.resizeCanvas();
+//Create a KeyBoard Obj
+const keyboard:KeyBoard = new KeyBoard(document);
+//Obj array to pass for the Animator
+window.localStorage.setItem('playerScore','0');
+//Create the Animation Obj
+const animation = new Animation([],canvas.ctx,keyboard);
+//create a new PLayer and add to the animation
+const player = createPlayer();
+animation.addSprite(player);
+const ground = createGround();
+animation.addSprite(ground);
+//Create a colision
+const colision = new Colisions.Colision(Colisions.TypesOfColision.FIRST_TO_ALL);
+colision.setMethodToColide((obj:Colisions.colisibleObj,cause:Colisions.colisibleObj)=>{
+    const tempObj = obj.getUtilInfo();
+    const tempCause = cause.getUtilInfo();
+    if ((tempObj.x + tempObj.w) > tempCause.x &&
+    tempObj.x < (tempCause.x + tempCause.w) &&
+        (tempObj.y + tempObj.h) > tempCause.y &&
+        tempObj.y < (tempCause.y + tempCause.h))
+            return true;
+    console.log("testing colisions");
+    return false;
+});
+colision.addObjToColision(player);
+colision.addObjToColision(ground);
+//Add one colision to the animation
+animation.pushColision(colision);
+
 //Add sprites to render
 animation.addSprite(createTextEntity());
 animation.addSprite(createScoreText());
-//Says that the loop can go on
+//The loop can continues
 animation.turnOn();
 //init the loop
 animation.nextFrame();
 
-animation.pushColision(colision);
+/*  Some functions  */
+
+function createGround():Ground{
+    const tempGround = new Ground(canvas.ctx);
+    tempGround.x = canvas.canvas.width/2;
+    tempGround.y = canvas.canvas.height/2;
+    tempGround.width = 50;
+    tempGround.height = 50;
+    tempGround.color = 'black';
+    return tempGround;
+}
 
 //Function to create an ScoreText, the number after the 'SCORE: ' Text 
 function createScoreText():ScoreText{

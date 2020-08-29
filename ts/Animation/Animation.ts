@@ -39,7 +39,6 @@ export class Animation{
     public nextFrame():void{
         //Check if this is to be running
         if( ! this._on ) return;
-
         //Clear the screen
         if(this._clearCanvas)
             this.clearScreen();
