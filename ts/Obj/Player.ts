@@ -45,16 +45,17 @@ export class Player extends Square implements Colisions.colisibleObj{
     }
 
     getUtilInfo():Colisions.UtilInfo{
-        const tempUtilInfo = new Colisions.UtilInfo();
-        tempUtilInfo.x = this.x;
-        tempUtilInfo.y = this.y;
-        tempUtilInfo.h = this.height;
-        tempUtilInfo.w = this.width;
-        return tempUtilInfo;
+        return new Colisions.UtilInfo(this.x,this.y,this.height,this.width,Colisions.TypesOnColision.PLAYER);
     }
 
-    public callBackMessageFunc(obj:Colisions.colisibleObj,cause:Colisions.colisibleObj){
-        console.log("Hi, i am the player and i colided here");
+    public callBackMessageFunc(cause:Colisions.colisibleObj,colisionInstance?:Colisions.Colision){
+        if(cause.getUtilInfo().type === Colisions.TypesOnColision.ENEMY){
+            console.log("Tell my mom i love her");
+            colisionInstance.popColision(this);
+            this._animation.popSprite(this);
+
+        }
+
     }
 
     private shoot():void{
@@ -98,9 +99,7 @@ export class Player extends Square implements Colisions.colisibleObj{
                 this.orientation = Player.O_DOWN;
             }
         }
-        //Space bar interaction
-        // Use Arrow function here, that way
-        // no variable is needed to access the Player instance
+
         this._keyboard.clickedKey(KeyBoard.SPACE_BAR,()=>{
             this.shoot();
         });

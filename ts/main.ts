@@ -1,6 +1,7 @@
 import { Canvas } from './Canvas/Canvas';
 import { Animation } from './Animation/Animation';
 import { Player } from './Obj/Player';
+import { Enemy } from './Obj/Enemy';
 import { Ground } from './Obj/Ground';
 import { KeyBoard } from './KeyBoard/KeyBoard';
 import { TextEntity } from './Obj/Text/TextEntity';
@@ -23,8 +24,10 @@ const animation = new Animation([],canvas.ctx,keyboard);
 //create a new PLayer and add to the animation
 const player = createPlayer();
 animation.addSprite(player);
-const ground = createGround();
-animation.addSprite(ground);
+//const ground = createGround();
+//animation.addSprite(ground);
+const enemy = createEnemy();
+animation.addSprite(enemy);
 //Create a colision
 const colision = new Colisions.Colision(Colisions.TypesOfColision.FIRST_TO_ALL);
 colision.setMethodToColide((obj:Colisions.colisibleObj,cause:Colisions.colisibleObj)=>{
@@ -35,11 +38,11 @@ colision.setMethodToColide((obj:Colisions.colisibleObj,cause:Colisions.colisible
         (tempObj.y + tempObj.h) > tempCause.y &&
         tempObj.y < (tempCause.y + tempCause.h))
             return true;
-    console.log("testing colisions");
     return false;
 });
 colision.addObjToColision(player);
-colision.addObjToColision(ground);
+//colision.addObjToColision(ground);
+colision.addObjToColision(enemy);
 //Add one colision to the animation
 animation.pushColision(colision);
 
@@ -86,6 +89,24 @@ function createTextEntity():TextEntity{
     text.text = "SCORE: ";
     return text;
 }
+
+function createEnemy():Enemy{
+    const tempEnemy:Enemy = new Enemy(canvas.ctx,keyboard,animation);
+
+        tempEnemy.width = 50;
+        tempEnemy.height = 75;
+        tempEnemy.x = canvas.canvas.width - tempEnemy.width;
+        tempEnemy.y = canvas.canvas.height/2;
+        tempEnemy.minWidth = 20;
+        tempEnemy.maxWidth = 125;
+        tempEnemy.minHeight = 50;
+        tempEnemy.maxHeight = 150;
+        tempEnemy.dx = 10;
+        tempEnemy.dy = 10;
+        tempEnemy.color = 'white';
+    return tempEnemy;
+}
+
 //Function to create the Player obj
 function createPlayer():Player{
         const newSquare:Player = new Player(canvas.ctx,keyboard,animation);

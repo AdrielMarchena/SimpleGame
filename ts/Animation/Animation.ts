@@ -14,7 +14,10 @@ export class Animation{
     private _specialKeysOn:boolean;
     private _ctx:CanvasRenderingContext2D;
     private _keyboard:KeyBoard;
+    //Array where the colisions will be in
     private _colisionArray:Colisions.Colision[];
+    //Gravity
+    public static readonly gravity:number = 1.6;
 
     constructor(sprite:Animable[],ctx:CanvasRenderingContext2D,keyboard:KeyBoard){
         this._sprites = sprite;
@@ -37,7 +40,7 @@ export class Animation{
     }
 
     public nextFrame():void{
-        //Check if this is to be running
+        //Check id need to run
         if( ! this._on ) return;
         //Clear the screen
         if(this._clearCanvas)
